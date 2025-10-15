@@ -1,5 +1,10 @@
-import 'package:elevate_cycle4/features/home/domain/models/product_model.dart';
+
+
+import 'package:elevate_cycle4/features/home/data/models/category_dto.dart';
+import 'package:elevate_cycle4/features/home/data/models/product_dto.dart';
 
 abstract class HomeRemoteDataSourceContract {
-  Future<List<ProductModel>> getProducts();
+   Future<List<ProductDto>> getProducts();
+
+  Future<List<CategoryDto>> getCategories();
 }

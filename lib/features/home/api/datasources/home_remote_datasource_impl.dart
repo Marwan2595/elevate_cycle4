@@ -1,10 +1,28 @@
+import 'package:elevate_cycle4/features/home/api/api_client/api_client.dart';
 import 'package:elevate_cycle4/features/home/data/datasources/home_remote_datasource_contact.dart';
-import 'package:elevate_cycle4/features/home/domain/models/product_model.dart';
+import 'package:elevate_cycle4/features/home/data/models/category_dto.dart';
+import 'package:elevate_cycle4/features/home/data/models/product_dto.dart';
+import 'package:elevate_cycle4/features/home/data/models/products_response.dart';
+import 'package:elevate_cycle4/features/home/domain/models/category_model.dart';
 
 class HomeRemoteDatasourceImpl implements HomeRemoteDataSourceContract {
+  HomeRemoteDatasourceImpl(this.homeApiClient);
+  HomeApiClient homeApiClient;
+
   @override
-  Future<List<ProductModel>> getProducts() {
-    // TODO: implement getProducts
+  Future<List<ProductDto>> getProducts() async {
+    try {
+      ProductsResponse productsResponse = await homeApiClient.getProducts();
+      List<ProductDto> products = productsResponse.data ?? [];
+      return products;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<List<CategoryDto>> getCategories() {
+    // TODO: implement getCategories
     throw UnimplementedError();
   }
 }
