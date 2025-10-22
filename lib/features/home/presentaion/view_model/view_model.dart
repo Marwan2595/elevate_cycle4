@@ -1,5 +1,7 @@
 import 'dart:developer';
-
+import 'package:dio/dio.dart';
+import 'package:elevate_cycle4/config/base_response/base_response.dart';
+import 'package:elevate_cycle4/config/base_state/base_state.dart';
 import 'package:elevate_cycle4/features/home/domain/models/product_model.dart';
 import 'package:elevate_cycle4/features/home/domain/usecases/get_products_usecase.dart';
 import 'package:elevate_cycle4/features/home/presentaion/view_model/home_states.dart';
@@ -8,18 +10,72 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class HomeViewModel extends Cubit<HomeStates> {
-  HomeViewModel(this.getProductsUseCase) : super(HomeInitialState());
+  HomeViewModel(this.getProductsUseCase) : super(HomeStates());
   final GetProductsUseCase getProductsUseCase;
 
   void getAllData() async {
-    getProducts();
+    getProducts1();
+    getProducts2();
   }
 
-  void getCategories() async {}
+  void getProducts1() async {
+    emit(
+      state.copyWith(
+        products1State: BaseState<List<ProductModel>>(isLoading: true),
+      ),
+    );
+    BaseResponse<List<ProductModel>> res = await getProductsUseCase();
+    switch (res) {
+      case SuccessResponse<List<ProductModel>>():
+        emit(
+          state.copyWith(
+            products1State: BaseState<List<ProductModel>>(
+              isLoading: false,
+              data: res.data,
+            ),
+          ),
+        );
+      case ErrorResponse<List<ProductModel>>():
+        String errMessage = res.error.toString();
+        if (res.error is DioException) {
+          errMessage = "Helloooooooooooooooo";
+        }
+        emit(
+          state.copyWith(
+            products1State: BaseState<List<ProductModel>>(
+              isLoading: false,
+              errorMessage: errMessage,
+            ),
+          ),
+        );
+    }
+  }
 
-  void getProducts() async {
-    emit(HomeLoadingState());
-    List<ProductModel> productList = await getProductsUseCase();
-    emit(HomeSuccessState(data: productList));
+  void getProducts2() async {
+    emit(state.copyWith(isLoadingProducts2Param: true));
+    await Future.delayed(Duration(seconds: 2));
+    BaseResponse<List<ProductModel>> res2 = await getProductsUseCase(
+      isSecondApi: true,
+    );
+    switch (res2) {
+      case SuccessResponse<List<ProductModel>>():
+        emit(
+          state.copyWith(
+            isLoadingProducts2Param: false,
+            productsList2Param: res2.data,
+          ),
+        );
+      case ErrorResponse<List<ProductModel>>():
+        String errMessage = res2.error.toString();
+        if (res2.error is DioException) {
+          errMessage = "Helloooooooooooooooo222222";
+        }
+        emit(
+          state.copyWith(
+            isLoadingProducts2Param: false,
+            errorMessage2Param: errMessage,
+          ),
+        );
+    }
   }
 }

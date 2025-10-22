@@ -23,59 +23,63 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("PRODUCTS LIST"),
+                Text("PRODUCTS LIST 1"),
                 BlocBuilder<HomeViewModel, HomeStates>(
                   builder: (context, state) {
-                    switch (state) {
-                      case HomeInitialState():
-                      case HomeLoadingState():
-                        return const CircularProgressIndicator();
-                      case HomeSuccessState():
-                        return state.data.isEmpty
-                            ? const Text("No Data")
-                            : SizedBox(
-                                height: 100,
+                    if (state.products1State?.errorMessage != null &&
+                        state.products1State!.errorMessage!.isNotEmpty) {
+                      return Text(state.products1State!.errorMessage!);
+                    } else if (!(state.products1State!.isLoading ?? false) &&
+                        state.products1State!.data != null &&
+                        state.products1State!.data!.isNotEmpty) {
+                      return SizedBox(
+                        height: 100,
 
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.data.length,
-                                  itemBuilder: (context, index) {
-                                    return ProductCard(
-                                      productModel: state.data[index],
-                                    );
-                                  },
-                                ),
-                              );
-                      case HomeErrorState():
-                        return Text(state.errMessage);
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.products1State!.data!.length,
+                          itemBuilder: (context, index) {
+                            return ProductCard(
+                              productModel: state.products1State!.data![index],
+                            );
+                          },
+                        ),
+                      );
+                    } else if (!(state.products1State!.isLoading ?? false) &&
+                        state.products1State!.data != null &&
+                        state.products1State!.data!.isEmpty) {
+                      return Text("No Data");
+                    } else {
+                      return const CircularProgressIndicator();
                     }
                   },
                 ),
                 Text("PRODUCTS LIST 2"),
                 BlocBuilder<HomeViewModel, HomeStates>(
                   builder: (context, state) {
-                    switch (state) {
-                      case HomeInitialState():
-                      case HomeLoadingState():
-                        return const CircularProgressIndicator();
-                      case HomeSuccessState():
-                        return state.data.isEmpty
-                            ? const Text("No Data")
-                            : SizedBox(
-                                height: 100,
+                    if (state.errorMessage2 != null &&
+                        state.errorMessage2!.isNotEmpty) {
+                      return Text(state.errorMessage2!);
+                    } else if (!state.isLoadingProducts2 &&
+                        state.productsList2.isNotEmpty) {
+                      return SizedBox(
+                        height: 100,
 
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.data.length,
-                                  itemBuilder: (context, index) {
-                                    return ProductCard(
-                                      productModel: state.data[index],
-                                    );
-                                  },
-                                ),
-                              );
-                      case HomeErrorState():
-                        return Text(state.errMessage);
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.productsList2.length,
+                          itemBuilder: (context, index) {
+                            return ProductCard(
+                              productModel: state.productsList2[index],
+                            );
+                          },
+                        ),
+                      );
+                    } else if (!state.isLoadingProducts2 &&
+                        state.productsList2.isEmpty) {
+                      return Text("No Data");
+                    } else {
+                      return const CircularProgressIndicator();
                     }
                   },
                 ),

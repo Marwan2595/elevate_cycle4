@@ -14,4 +14,7 @@ abstract class HomeApiClient {
 
   @GET(AppEndPoints.getProductsEndPoint)
   Future<ProductsResponse> getProducts();
+
+  @GET(AppEndPoints.getProductsEndPoint2)
+  Future<ProductsResponse> getProducts2();
 }
