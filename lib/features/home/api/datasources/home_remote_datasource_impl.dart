@@ -3,8 +3,9 @@ import 'package:elevate_cycle4/features/home/data/datasources/home_remote_dataso
 import 'package:elevate_cycle4/features/home/data/models/category_dto.dart';
 import 'package:elevate_cycle4/features/home/data/models/product_dto.dart';
 import 'package:elevate_cycle4/features/home/data/models/products_response.dart';
-import 'package:elevate_cycle4/features/home/domain/models/category_model.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: HomeRemoteDataSourceContract)
 class HomeRemoteDatasourceImpl implements HomeRemoteDataSourceContract {
   HomeRemoteDatasourceImpl(this.homeApiClient);
   HomeApiClient homeApiClient;

@@ -1,11 +1,16 @@
-import 'package:elevate_cycle4/features/home/domain/models/product_model.dart';
-import 'package:elevate_cycle4/features/home/domain/usecases/get_categories_usecase.dart';
-import 'package:elevate_cycle4/features/home/domain/usecases/get_products_usecase.dart';
+import 'dart:developer';
 
-class HomeViewModel {
-  HomeViewModel(this.getProductsUseCase);
+import 'package:elevate_cycle4/features/home/domain/models/product_model.dart';
+import 'package:elevate_cycle4/features/home/domain/usecases/get_products_usecase.dart';
+import 'package:elevate_cycle4/features/home/presentaion/view_model/home_states.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+
+@injectable
+class HomeViewModel extends Cubit<HomeStates> {
+  HomeViewModel(this.getProductsUseCase) : super(HomeInitialState());
   final GetProductsUseCase getProductsUseCase;
-  List<ProductModel> productList = [];
+
   void getAllData() async {
     getProducts();
   }
@@ -13,9 +18,8 @@ class HomeViewModel {
   void getCategories() async {}
 
   void getProducts() async {
-    productList = await getProductsUseCase();
-    productList.forEach((product) {
-      print(product.toString());
-    });
+    emit(HomeLoadingState());
+    List<ProductModel> productList = await getProductsUseCase();
+    emit(HomeSuccessState(data: productList));
   }
 }
