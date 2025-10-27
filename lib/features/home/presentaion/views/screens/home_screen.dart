@@ -14,7 +14,6 @@ class HomeScreen extends StatelessWidget {
   final HomeViewModel homeViewModel = getIt<HomeViewModel>();
   @override
   Widget build(BuildContext context) {
-    //skhdfgkshjdgfkjshgdfkhsdgfkjh
     return BlocProvider<HomeViewModel>(
       create: (cxt) => homeViewModel..doIntent(GetAllDataEvent()),
       child: Scaffold(
