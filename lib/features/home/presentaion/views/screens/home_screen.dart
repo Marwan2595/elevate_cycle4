@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   final HomeViewModel homeViewModel = getIt<HomeViewModel>();
   @override
   Widget build(BuildContext context) {
+    //skhdfgkshjdgfkjshgdfkhsdgfkjh
     return BlocProvider<HomeViewModel>(
       create: (cxt) => homeViewModel..doIntent(GetAllDataEvent()),
       child: Scaffold(
@@ -27,7 +28,6 @@ class HomeScreen extends StatelessWidget {
                 Text("PRODUCTS LIST 1"),
                 BlocBuilder<HomeViewModel, HomeStates>(
                   builder: (context, state) {
-                  
                     if (state.products1State?.errorMessage != null &&
                         state.products1State!.errorMessage!.isNotEmpty) {
                       return Text(state.products1State!.errorMessage!);
@@ -103,7 +103,6 @@ class ProductCard extends StatelessWidget {
   ProductModel productModel;
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: const EdgeInsets.all(8),
       child: Text(productModel.name),
