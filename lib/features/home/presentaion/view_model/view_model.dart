@@ -16,6 +16,7 @@ class HomeViewModel extends Cubit<HomeStates> {
 
   void doIntent(HomeEvents event) {
     switch (event) {
+      //sdfvsdfsdf
       case GetAllDataEvent():
         _getAllData();
       case GetProducts1Event():
