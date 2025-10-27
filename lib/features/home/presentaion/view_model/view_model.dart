@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:elevate_cycle4/config/base_response/base_response.dart';
 import 'package:elevate_cycle4/config/base_state/base_state.dart';
@@ -7,36 +6,39 @@ import 'package:elevate_cycle4/features/home/domain/models/product_model.dart';
 import 'package:elevate_cycle4/features/home/domain/usecases/get_products_usecase.dart';
 import 'package:elevate_cycle4/features/home/presentaion/view_model/home_events.dart';
 import 'package:elevate_cycle4/features/home/presentaion/view_model/home_states.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class HomeViewModel extends Bloc<HomeEvents, HomeStates> {
-  HomeViewModel(this.getProductsUseCase) : super(HomeStates()) {
-    //Tranform event into function
+class HomeViewModel extends Cubit<HomeStates> {
+  HomeViewModel(this._getProductsUseCase) : super(HomeStates());
+  final GetProductsUseCase _getProductsUseCase;
 
-    on<GetAllDataEvent>(_getAllData);
-    on<GetProducts1Event>(_getProducts1);
-    on<GetProducts2Event>(_getProducts2);
+  void doIntent(HomeEvents event) {
+    switch (event) {
+      case GetAllDataEvent():
+        _getAllData();
+      case GetProducts1Event():
+        _getProducts1();
+      case GetProducts2Event():
+        _getProducts2();
+    }
   }
-  final GetProductsUseCase getProductsUseCase;
 
-  void _getAllData(GetAllDataEvent event, Emitter<HomeStates> emit) async {
+  void _getAllData() async {
     await Future.wait([
-      _getProducts1(GetProducts1Event(), emit), //2
-      _getProducts2(GetProducts2Event(), emit), //3
+      _getProducts1(), //2
+      _getProducts2(), //3
     ]);
   }
 
-  Future<void> _getProducts1(
-    GetProducts1Event event,
-    Emitter<HomeStates> emit,
-  ) async {
+  Future<void> _getProducts1() async {
     emit(
       state.copyWith(
         products1State: BaseState<List<ProductModel>>(isLoading: true),
       ),
     );
-    BaseResponse<List<ProductModel>> res = await getProductsUseCase();
+    BaseResponse<List<ProductModel>> res = await _getProductsUseCase();
     switch (res) {
       case SuccessResponse<List<ProductModel>>():
         emit(
@@ -63,13 +65,10 @@ class HomeViewModel extends Bloc<HomeEvents, HomeStates> {
     }
   }
 
-  Future<void> _getProducts2(
-    GetProducts2Event event,
-    Emitter<HomeStates> emit,
-  ) async {
+  Future<void> _getProducts2() async {
     emit(state.copyWith(isLoadingProducts2Param: true));
     await Future.delayed(Duration(seconds: 2));
-    BaseResponse<List<ProductModel>> res2 = await getProductsUseCase(
+    BaseResponse<List<ProductModel>> res2 = await _getProductsUseCase(
       isSecondApi: true,
     );
     switch (res2) {

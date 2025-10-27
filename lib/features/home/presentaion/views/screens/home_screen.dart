@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeViewModel>(
-      create: (cxt) => homeViewModel..add(GetAllDataEvent()),
+      create: (cxt) => homeViewModel..doIntent(GetAllDataEvent()),
       child: Scaffold(
         body: Center(
           child: SizedBox(
@@ -27,6 +27,7 @@ class HomeScreen extends StatelessWidget {
                 Text("PRODUCTS LIST 1"),
                 BlocBuilder<HomeViewModel, HomeStates>(
                   builder: (context, state) {
+                  
                     if (state.products1State?.errorMessage != null &&
                         state.products1State!.errorMessage!.isNotEmpty) {
                       return Text(state.products1State!.errorMessage!);
@@ -53,6 +54,10 @@ class HomeScreen extends StatelessWidget {
                     } else {
                       return const CircularProgressIndicator();
                     }
+                  },
+                  buildWhen: (previous, current) {
+                    return !(current.isLoadingProducts2 !=
+                        previous.isLoadingProducts2);
                   },
                 ),
                 Text("PRODUCTS LIST 2"),
@@ -98,6 +103,7 @@ class ProductCard extends StatelessWidget {
   ProductModel productModel;
   @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: const EdgeInsets.all(8),
       child: Text(productModel.name),

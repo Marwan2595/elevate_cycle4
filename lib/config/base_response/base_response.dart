@@ -8,5 +8,8 @@ class SuccessResponse<T> extends BaseResponse<T> {
 
 class ErrorResponse<T> extends BaseResponse<T> {
   final Exception error;
-  ErrorResponse({required this.error});
+  String message = "something went wrong";
+  ErrorResponse({required this.error}) {
+    message = "dfljkghdkjf";
+  }
 }
