@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:elevate_cycle4/config/di/di.dart';
 import 'package:elevate_cycle4/features/home/domain/models/product_model.dart';
+import 'package:elevate_cycle4/features/home/presentaion/view_model/home_events.dart';
 import 'package:elevate_cycle4/features/home/presentaion/view_model/home_states.dart';
 
 import 'package:elevate_cycle4/features/home/presentaion/view_model/view_model.dart';
@@ -14,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeViewModel>(
-      create: (cxt) => homeViewModel..getAllData(),
+      create: (cxt) => homeViewModel..add(GetAllDataEvent()),
       child: Scaffold(
         body: Center(
           child: SizedBox(
@@ -29,8 +30,8 @@ class HomeScreen extends StatelessWidget {
                     if (state.products1State?.errorMessage != null &&
                         state.products1State!.errorMessage!.isNotEmpty) {
                       return Text(state.products1State!.errorMessage!);
-                    } else if (!(state.products1State!.isLoading ?? false) &&
-                        state.products1State!.data != null &&
+                    } else if (!(state.products1State?.isLoading ?? false) &&
+                        state.products1State?.data != null &&
                         state.products1State!.data!.isNotEmpty) {
                       return SizedBox(
                         height: 100,
@@ -45,8 +46,8 @@ class HomeScreen extends StatelessWidget {
                           },
                         ),
                       );
-                    } else if (!(state.products1State!.isLoading ?? false) &&
-                        state.products1State!.data != null &&
+                    } else if (!(state.products1State?.isLoading ?? false) &&
+                        state.products1State?.data != null &&
                         state.products1State!.data!.isEmpty) {
                       return Text("No Data");
                     } else {
