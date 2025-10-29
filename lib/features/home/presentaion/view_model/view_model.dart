@@ -20,7 +20,7 @@ class HomeViewModel extends Cubit<HomeStates> {
         _getAllData();
       case GetProducts1Event():
         _getProducts1();
-      case GetProducts2Event():
+      case GetProducts2Event(): //dgdfgdfgdfgdfg
         _getProducts2();
     }
   }
