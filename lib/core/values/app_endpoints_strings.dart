@@ -4,4 +4,5 @@ class AppEndPoints {
   static const String getProductsEndPoint2 = "products";
   static const String loginEndpoint = "login";
 
+  static const String registerEndpoint = "register";
 }
