@@ -1,3 +1,4 @@
+import 'package:elevate_cycle4/config/base_response/base_response.dart';
 import 'package:elevate_cycle4/features/home/data/datasources/home_local_datasource_contract.dart';
 import 'package:elevate_cycle4/features/home/data/datasources/home_remote_datasource_contact.dart';
 import 'package:elevate_cycle4/features/home/data/models/product_dto.dart';
@@ -19,15 +20,17 @@ class HomeRepoImpl implements HomeRepoContract {
   }
 
   @override
-  Future<List<ProductModel>> getProducts() async {
-    try {
-      List<ProductDto> productsDTOs = await remoteDataSource.getProducts();
-      List<ProductModel> products = productsDTOs
-          .map((e) => e.toDomain())
-          .toList();
-      return products;
-    } catch (e) {
-      throw Exception(e);
+  Future<BaseResponse<List<ProductModel>>> getProducts( {bool isSecondApi = false}) async {
+    BaseResponse<List<ProductDto>> productsResponse = await remoteDataSource.getProducts(isSecondApi: isSecondApi);
+    switch (productsResponse) {
+      case SuccessResponse<List<ProductDto>> ():
+        List<ProductDto> productsDTOs = productsResponse.data;
+        List<ProductModel> products = productsDTOs
+            .map((e) => e.toDomain())
+            .toList();
+        return SuccessResponse<List<ProductModel>>(data: products);
+      case ErrorResponse<List<ProductDto>> ():
+        return ErrorResponse<List<ProductModel>>(error: productsResponse.error);
     }
   }
 }
