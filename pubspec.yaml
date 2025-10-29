@@ -30,14 +30,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  retrofit: ^4.6.0
+  logger: ^2.6.0  # for logging purpose
+  json_annotation: ^4.9.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_bloc: ^9.1.1
+  injectable:  
+  # add get_it  
+  get_it:  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  retrofit_generator: ^10.0.1
+  build_runner: ^2.6.0
+  json_serializable: ^6.10.0
+  injectable_generator:  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
