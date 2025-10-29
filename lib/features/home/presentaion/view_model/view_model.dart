@@ -18,7 +18,13 @@ class HomeViewModel extends Cubit<HomeStates> {
   void getCategories() async {}
 
   void getProducts() async {
-    emit(HomeLoadingState());
+    emit(HomeLoadingState()); //jdksadkjshakdjhkasjdha
+    List<ProductModel> productList = await getProductsUseCase();
+    emit(HomeSuccessState(data: productList));
+  }
+
+  void getProducts2() async {
+    emit(HomeLoadingState()); //jdksadkjshakdjhkasjdha
     List<ProductModel> productList = await getProductsUseCase();
     emit(HomeSuccessState(data: productList));
   }
