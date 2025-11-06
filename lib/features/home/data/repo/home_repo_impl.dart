@@ -20,16 +20,20 @@ class HomeRepoImpl implements HomeRepoContract {
   }
 
   @override
-  Future<BaseResponse<List<ProductModel>>> getProducts( {bool isSecondApi = false}) async {
-    BaseResponse<List<ProductDto>> productsResponse = await remoteDataSource.getProducts(isSecondApi: isSecondApi);
+  Future<BaseResponse<List<ProductModel>>> getProducts({
+    bool isSecondApi = false,
+  }) async {
+    BaseResponse<List<ProductDto>> productsResponse = await remoteDataSource
+        .getProducts(isSecondApi: isSecondApi);
+    //result ====> SuccessResponse<List<ProductDto>>(data: dummyProductDTOList);
     switch (productsResponse) {
-      case SuccessResponse<List<ProductDto>> ():
+      case SuccessResponse<List<ProductDto>>():
         List<ProductDto> productsDTOs = productsResponse.data;
         List<ProductModel> products = productsDTOs
             .map((e) => e.toDomain())
             .toList();
         return SuccessResponse<List<ProductModel>>(data: products);
-      case ErrorResponse<List<ProductDto>> ():
+      case ErrorResponse<List<ProductDto>>():
         return ErrorResponse<List<ProductModel>>(error: productsResponse.error);
     }
   }
